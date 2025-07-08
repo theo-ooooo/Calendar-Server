@@ -1,0 +1,23 @@
+# requirements.txt
+
+fastapi
+uvicorn[standard]
+
+# DB & ORM
+sqlalchemy>=2.0
+asyncpg
+alembic
+
+# 보안 / 인증
+passlib[bcrypt]
+python-jose[cryptography]
+
+# 설정 관리
+pydantic-settings
+
+# 테스트
+pytest
+httpx
+
+# 기타
+python-dotenv
