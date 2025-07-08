@@ -18,8 +18,8 @@ fileConfig(config.config_file_name)
 DATABASE_URL = os.getenv("DATABASE_URL").replace("asyncpg", "psycopg2")
 
 # 모델 metadata 불러오기 (Base = DeclarativeBase)
-from app.db.session import Base  # ✅ Base.metadata를 가져오기 위함
-import app.models
+from app.infrastructure.db.session import Base  # ✅ Base.metadata를 가져오기 위함
+import app.domain.entities
 target_metadata = Base.metadata
 
 
