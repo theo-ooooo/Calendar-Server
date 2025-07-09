@@ -1,4 +1,3 @@
-from http.client import HTTPException
 
 import httpx
 
@@ -22,7 +21,8 @@ class KakaoAuthStrategy(SocialLoginStrategy):
 
             if not res_json.get("access_token"):
                 print("res", res_json)
-                raise HTTPException()
+                from fastapi import HTTPException
+                raise HTTPException(status_code=400, detail="Kakao login failed")
 
             access_token = res_json["access_token"]
 

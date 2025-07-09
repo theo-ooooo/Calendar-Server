@@ -1,6 +1,5 @@
 
-from fastapi import APIRouter, Query
-from fastapi.params import Depends
+from fastapi import APIRouter, Query, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette.responses import RedirectResponse
 from starlette.status import HTTP_200_OK
@@ -18,7 +17,10 @@ from app.usecases.user.create_or_get_social_user import CreateOrGetSocialUserUse
 router = APIRouter()
 
 @router.get("/{provider}/callback", status_code=HTTP_200_OK)
-async def social_login(provider: Provider, code:str = Query(...), session: AsyncSession = Depends(get_session)):
+async def social_login(
+        provider: Provider,
+        code:str = Query(...),
+        session: AsyncSession = Depends(get_session)):
  social_user = await get_social_strategy(provider).get_user(code)
  social_use_case = CreateOrGetSocialUserUseCase(UserRepositoryImpl(session))
  user = await social_use_case.execute(social_user)

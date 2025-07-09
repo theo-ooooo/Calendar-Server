@@ -16,3 +16,7 @@ class UserRepository(ABC):
     async def create(self, user: User) -> User:
         """사용자 생성 (소셜 로그인 기준)"""
         pass
+
+    @abstractmethod
+    async def get_by_user_id(self, user_id: int) -> Optional[User]:
+        pass

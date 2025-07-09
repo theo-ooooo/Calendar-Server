@@ -28,7 +28,22 @@ class UserRepositoryImpl(UserRepository):
         result = await self.session.execute(
             select(UserModel).where(UserModel.uid == uid, UserModel.provider == provider)
         )
-        model = result.scalar_one_or_none()
+        model: UserModel | None = result.scalar_one_or_none()
+        if model is None:
+            return None
+        return User(
+            id=model.id,
+            uid=model.uid,
+            provider=model.provider,
+            email=model.email,
+            nickname=model.nickname
+        )
+
+    async def get_by_user_id(self, user_id) -> User | None:
+        result = await self.session.execute(
+            select(UserModel).where(UserModel.id == user_id)
+        )
+        model: UserModel | None = result.scalar_one_or_none()
         if model is None:
             return None
         return User(
