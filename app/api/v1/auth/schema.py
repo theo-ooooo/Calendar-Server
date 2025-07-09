@@ -1,14 +1,10 @@
-from typing import Optional
-
 from pydantic import EmailStr, BaseModel
 
 from app.domain.user.entity import User
 
 
 class LoginRequest(BaseModel):
-    uid: str
-    email: Optional[EmailStr] = None
-    nickname: Optional[str] = None
+    code: str
 
 
 class UserResponse(BaseModel):

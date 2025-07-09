@@ -6,6 +6,8 @@ class Settings(BaseSettings):
     jwt_secret_key: str = Field(..., alias="JWT_SECRET_KEY")
     jwt_algorithm: str = Field(default="HS256", alias="JWT_ALGORITHM")
     access_token_expire_minutes: int = Field(default=30, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
+    kakao_client_id: str = Field(..., alias="KAKAO_CLIENT_ID")
+    kakao_redirect_uri: str = Field(..., alias="KAKAO_REDIRECT_URI")
 
     class Config:
         env_file = ".env"
