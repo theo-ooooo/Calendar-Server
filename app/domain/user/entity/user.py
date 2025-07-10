@@ -1,4 +1,4 @@
-# app/domain/user/entity.py
+# app/domain/user/user.py
 from dataclasses import dataclass
 from typing import Optional
 
