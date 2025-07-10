@@ -1,7 +1,5 @@
-from typing import Any, Coroutine
-
 from app.api.v1.auth.schema import UserResponse
-from app.domain.user.repository import UserRepository
+from app.domain.user.repository.user_repository import UserRepository
 
 class GetUserByUIDUseCase:
     def __init__(self, repository: UserRepository):

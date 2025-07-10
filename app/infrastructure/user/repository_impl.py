@@ -1,10 +1,9 @@
 # app/infrastructure/user/repository_impl.py
-import traceback
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from app.domain.user.entity import User
-from app.domain.user.repository import UserRepository
+from app.domain.user.entity.user import User
+from app.domain.user.repository.user_repository import UserRepository
 from app.infrastructure.db.models import User as UserModel
 
 class UserRepositoryImpl(UserRepository):

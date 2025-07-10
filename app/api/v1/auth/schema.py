@@ -1,6 +1,4 @@
-from pydantic import EmailStr, BaseModel
-
-from app.domain.user.entity import User
+from pydantic import BaseModel
 
 
 class LoginRequest(BaseModel):

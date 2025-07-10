@@ -5,8 +5,8 @@ from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
 
-from app.domain.user.entity import User
-from app.infrastructure.auth.jwt_token_service import JwtTokenService
+from app.domain.user.entity.user import User
+from app.infrastructure.auth.service.jwt_token_service import JwtTokenService
 from app.infrastructure.db.database import get_session
 from app.infrastructure.user.repository_impl import UserRepositoryImpl
 

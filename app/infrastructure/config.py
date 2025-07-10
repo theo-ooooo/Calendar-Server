@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = Field(default=30, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
     kakao_client_id: str = Field(..., alias="KAKAO_CLIENT_ID")
     kakao_redirect_uri: str = Field(..., alias="KAKAO_REDIRECT_URI")
+    redis_host: str = Field(..., alias="REDIS_HOST")
+    redis_port: int = Field(..., alias="REDIS_PORT")
+    redis_password: str = Field(..., alias="REDIS_PASSWORD")
+    redis_db: int = Field(..., alias="REDIS_DB")
 
     class Config:
         env_file = ".env"

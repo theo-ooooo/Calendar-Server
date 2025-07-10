@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 
 from jose import jwt
 
-from app.domain.auth.token_service import TokenService
+from app.domain.auth.service.token_service import TokenService
 from app.infrastructure.config import settings
 
 

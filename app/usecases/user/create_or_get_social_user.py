@@ -1,6 +1,6 @@
-from app.domain.user.entity import User
-from app.domain.user.repository import UserRepository
-from app.domain.user.social_user import SocialUser
+from app.domain.user.entity.user import User
+from app.domain.user.repository.user_repository import UserRepository
+from app.domain.auth.entity.social_user import SocialUser
 
 
 class CreateOrGetSocialUserUseCase:

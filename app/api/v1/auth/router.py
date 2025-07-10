@@ -5,11 +5,13 @@ from starlette.responses import RedirectResponse
 from starlette.status import HTTP_200_OK
 
 
-from app.domain.auth.provider_type import Provider
-from app.infrastructure.auth.jwt_token_service import JwtTokenService
-from app.infrastructure.auth.strategy_resolver import get_social_strategy
+from app.domain.auth.entity.provider_type import Provider
+from app.infrastructure.auth.repository.redis_refresh_token_store import RedisRefreshTokenStore
+from app.infrastructure.auth.service.jwt_token_service import JwtTokenService
+from app.infrastructure.auth.social.strategy_resolver import get_social_strategy
 from app.infrastructure.config import settings
 from app.infrastructure.db.database import get_session
+from app.infrastructure.redis.client import redis_client
 from app.infrastructure.user.repository_impl import UserRepositoryImpl
 from app.usecases.auth.create_token_pair import CreateTokenPairUseCase
 from app.usecases.user.create_or_get_social_user import CreateOrGetSocialUserUseCase
@@ -25,8 +27,9 @@ async def social_login(
  social_use_case = CreateOrGetSocialUserUseCase(UserRepositoryImpl(session))
  user = await social_use_case.execute(social_user)
 
- token_user_case = CreateTokenPairUseCase(JwtTokenService())
- access_token, refresh_token = token_user_case.execute(user.id)
+ from app.infrastructure.redis import client
+ token_user_case = CreateTokenPairUseCase(JwtTokenService(),RedisRefreshTokenStore(redis_client))
+ access_token, refresh_token = await token_user_case.execute(user.id)
 
  return {"accessToken": access_token, "refreshToken": refresh_token}
 

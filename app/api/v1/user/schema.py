@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.domain.user.entity import User
+from app.domain.user.entity.user import User
 
 
 class UserResponse(BaseModel):

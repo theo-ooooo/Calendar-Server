@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.api.v1.auth.schema import LoginRequest
-from app.domain.user.social_user import SocialUser
+from app.domain.auth.entity.social_user import SocialUser
 
 
 class SocialLoginStrategy(ABC):

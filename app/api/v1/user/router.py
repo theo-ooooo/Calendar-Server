@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app.api.v1.user.schema import UserResponse
-from app.domain.user.entity import User
+from app.domain.user.entity.user import User
 from app.infrastructure.dependencies.auth import require_login
 
 router = APIRouter()
