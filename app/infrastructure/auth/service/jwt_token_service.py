@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 
-from jose import jwt
+from fastapi import HTTPException
+from jose import jwt, JWTError
 
 from app.domain.auth.service.token_service import TokenService
 from app.infrastructure.config import settings
@@ -18,4 +19,7 @@ class JwtTokenService(TokenService):
         return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
 
     def verify_token(self, token: str) -> dict:
-        return jwt.decode(token, settings.jwt_secret_key, algorithms=settings.jwt_algorithm)
+        try:
+            return jwt.decode(token, settings.jwt_secret_key, algorithms=settings.jwt_algorithm)
+        except JWTError:
+            raise HTTPException(status_code=401, detail="Invalid token")
