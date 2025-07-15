@@ -13,6 +13,7 @@ from app.api.v1.auth.dependencies import (
 )
 from app.domain.auth.entity.provider_type import Provider
 from app.infrastructure.config import settings
+from app.infrastructure.response.response_handler import ApiResponse
 from app.usecases.auth.create_token_pair import CreateTokenPairUseCase
 from app.usecases.auth.re_issue_token import ReIssueTokenUseCase
 from app.usecases.user.create_or_get_social_user import CreateOrGetSocialUserUseCase
@@ -21,7 +22,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/{provider}/callback", status_code=HTTP_200_OK, response_model=TokenResponse)
+@router.get("/{provider}/callback", status_code=HTTP_200_OK)
 async def social_login(
         provider: Provider,
         code: str = Query(..., description="소셜 로그인 인증 코드"),
@@ -39,7 +40,7 @@ async def social_login(
 
         logger.info(f"소셜 로그인 성공: provider={provider}, user_id={user.id}")
 
-        return TokenResponse(access_token=access_token, refresh_token=refresh_token)
+        return ApiResponse.success(data=TokenResponse(access_token=access_token, refresh_token=refresh_token))
 
 
 @router.get("/kakao/login", response_class=RedirectResponse)
@@ -55,14 +56,11 @@ async def kakao_login():
     return RedirectResponse(kakao_auth_url)
 
 
-@router.post("/token/refresh", response_model=TokenResponse)
+@router.post("/token/refresh")
 async def re_issue_token(
         refresh_token: str = Header(..., alias="X-Refresh-Token", description="리프레시 토큰"),
         use_case: ReIssueTokenUseCase = Depends(get_reissue_token_use_case)
 ):
     access_token, new_refresh_token = await use_case.execute(refresh_token)
 
-    return TokenResponse(
-        access_token=access_token,
-        refresh_token=new_refresh_token
-    )
+    return ApiResponse.success(data=TokenResponse(access_token=access_token, refresh_token=new_refresh_token))
