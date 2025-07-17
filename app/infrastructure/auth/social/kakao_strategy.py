@@ -3,6 +3,7 @@ import httpx
 
 from app.domain.auth.service.social_strategy import SocialLoginStrategy
 from app.domain.auth.entity.social_user import SocialUser
+from app.domain.exceptions import AuthException
 from app.infrastructure.config import settings
 
 
@@ -21,7 +22,7 @@ class KakaoAuthStrategy(SocialLoginStrategy):
             if not res_json.get("access_token"):
                 print("res", res_json)
                 from fastapi import HTTPException
-                raise HTTPException(status_code=400, detail="Kakao login failed")
+                raise AuthException.server_error(detail="Kakao login failed")
 
             access_token = res_json["access_token"]
 
