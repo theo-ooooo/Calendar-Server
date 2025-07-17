@@ -5,7 +5,7 @@ from starlette.responses import RedirectResponse
 from starlette.status import HTTP_200_OK
 import logging
 
-from app.api.v1.auth.schema import TokenResponse
+from app.api.v1.auth.schema import TokenResponse, LoginRequest
 from app.api.v1.auth.dependencies import (
     get_create_token_use_case,
     get_reissue_token_use_case,
@@ -25,12 +25,12 @@ router = APIRouter()
 @router.post("/{provider}/callback", status_code=HTTP_200_OK)
 async def social_login(
         provider: Provider,
-        code: str = Query(..., description="소셜 로그인 인증 코드"),
+        request: LoginRequest,
         social_user_use_case: CreateOrGetSocialUserUseCase = Depends(get_social_user_use_case),
         token_use_case: CreateTokenPairUseCase = Depends(get_create_token_use_case)
 ):
         from app.infrastructure.auth.social.strategy_resolver import get_social_strategy
-        social_user = await get_social_strategy(provider).get_user(code)
+        social_user = await get_social_strategy(provider).get_user(request.code)
 
         # 2. 사용자 생성 또는 조회
         user = await social_user_use_case.execute(social_user)
