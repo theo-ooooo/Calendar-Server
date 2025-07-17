@@ -8,5 +8,5 @@ class LoginRequest(BaseModel):
 
 
 class TokenResponse(BaseModel):
-    access_token: str
-    refresh_token: str
+    accessToken: str
+    refreshToken: str

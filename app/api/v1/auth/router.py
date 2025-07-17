@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/{provider}/callback", status_code=HTTP_200_OK)
+@router.post("/{provider}/callback", status_code=HTTP_200_OK)
 async def social_login(
         provider: Provider,
         code: str = Query(..., description="소셜 로그인 인증 코드"),
@@ -40,7 +40,7 @@ async def social_login(
 
         logger.info(f"소셜 로그인 성공: provider={provider}, user_id={user.id}")
 
-        return ApiResponse.success(data=TokenResponse(access_token=access_token, refresh_token=refresh_token))
+        return ApiResponse.success(data=TokenResponse(accessToken=access_token, refreshToken=refresh_token))
 
 
 @router.get("/kakao/login", response_class=RedirectResponse)
@@ -63,4 +63,4 @@ async def re_issue_token(
 ):
     access_token, new_refresh_token = await use_case.execute(refresh_token)
 
-    return ApiResponse.success(data=TokenResponse(access_token=access_token, refresh_token=new_refresh_token))
+    return ApiResponse.success(data=TokenResponse(accessToken=access_token, refreshToken=new_refresh_token))
