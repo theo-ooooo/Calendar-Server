@@ -14,6 +14,7 @@ class Team(Base):
     owner_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
 
     owner: Mapped["User"] = relationship("User", back_populates="owned_teams")
+    members: Mapped[list["TeamMember"]] = relationship("TeamMember", back_populates="team")
 
     __table_args__ = (
         Index('idx_teams_owner', 'owner_id'),
