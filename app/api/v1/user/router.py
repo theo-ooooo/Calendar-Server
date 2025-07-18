@@ -8,6 +8,6 @@ from app.infrastructure.response.response_handler import ApiResponse
 router = APIRouter()
 
 
-@router.get("/me", response_model=UserResponse)
+@router.get("/me")
 async def get_me(user: User = Depends(require_login)):
     return ApiResponse.success(data=UserResponse.from_entity(user))

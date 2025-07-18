@@ -1,5 +1,7 @@
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from typing import Optional
+
+from fastapi import Depends, HTTPException, Cookie
+from fastapi.security import OAuth2PasswordBearer, HTTPBearer
 from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 from starlette import status
@@ -53,14 +55,12 @@ def get_social_user_use_case(
     return CreateOrGetSocialUserUseCase(user_repository)
 
 async def get_current_user(
-        token: str = Depends(OAuth2PasswordBearer(tokenUrl="token")),
+        bearer_token = Depends(HTTPBearer(auto_error=False)),
+        cookies_token: Optional[str] = Cookie(None, alias="accessToken"),
         session: AsyncSession = Depends(get_session)) -> User:
     try:
-        print("token", token)
-        payload = JwtTokenService().verify_token(token)
+        payload = JwtTokenService().verify_token(bearer_token or cookies_token)
         user_id = payload.get("sub")
-        print("userId", user_id)
-        print("payload", payload)
 
         if user_id is None:
             raise credentials_exception()
